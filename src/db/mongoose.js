@@ -3,26 +3,4 @@ const validator = require('validator');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
   useNewUrlParser: true,
-  //   useCreateIndex: true,
 });
-
-const Tasks = mongoose.model('Task', {
-  description: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  completed: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-// CREATE A NEW TASK
-
-// const firstTask = new Tasks({});
-
-// firstTask
-//   .save()
-//   .then((res) => console.log('data saved', res))
-//   .catch((err) => console.log('something went wrong', err));
