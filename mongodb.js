@@ -17,9 +17,10 @@ MongoClient.connect(
     if (error) {
       return console.log('Unable to connect to Database');
     }
-
     const db = client.db(databaseName);
+    const userCollection = db.collection('users');
 
+    // INSERT SINGLE DOC
     // db.collection('users').insertOne(
     //   {
     //     // _id: id,
@@ -33,16 +34,17 @@ MongoClient.connect(
     //     console.log(res.insertedId);
     //   }
     // );
-    // INsert Multiple document
+
+    // INSERT MULTIPLE DOCS
     // db.collection('users').insertMany(
     //   [
     //     {
-    //       name: 'Task app - 2',
+    //       name: 'Task app - 3',
     //       data_type: 'Third entry',
     //       count: 1,
     //     },
     //     {
-    //       name: 'Task app - 3',
+    //       name: 'Task app - 4',
     //       data_type: 'Fourth entry',
     //       count: 1,
     //     },
@@ -54,6 +56,8 @@ MongoClient.connect(
     //     console.log(res);
     //   }
     // );
+
+    //FIND DOCUMENT IN MONGODB
     // db.collection('users').findOne(
     //   { name: 'Task app', data_type: '123' },
     //   (err, res) => {
@@ -70,21 +74,49 @@ MongoClient.connect(
     //     console.log(res);
     //   });
 
-    //Update document
-    db.collection('users')
-      .updateOne(
-        {
-          _id: new ObjectId('62d90b04a37ad2b46e2d53bf'),
-        },
-        {
-          // $set: {
-          //   name: 'new Task name',
-          // },
-          $inc: {
-            count: 1,
-          },
-        }
-      )
+    //UPDATE DOCUMENTS
+    // db.collection('users')
+    //   .updateOne(
+    //     {
+    //       _id: new ObjectId('62d90b04a37ad2b46e2d53bf'),
+    //     },
+    //     {
+    //       // $set: {
+    //       //   name: 'new Task name',
+    //       // },
+    //       $inc: {
+    //         count: 20,
+    //       },
+    //     }
+    //   )
+    //   .then((result) => console.log(result))
+    //   .catch((err) => console.log(err));
+
+    //UPDATE MANY DOCS
+
+    // userCollection
+    //   .updateMany(
+    //     { count: 2 },
+    //     {
+    //       $inc: {
+    //         count: 10,
+    //       },
+    //     }
+    //   )
+    //   .then((result) => console.log(result))
+    //   .catch((err) => console.log(err));
+
+    //DELETE DOCS
+
+    userCollection
+      .deleteMany({
+        count: 12,
+      })
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
+
+    userCollection
+      .deleteOne({ _id: new ObjectId('62d90b04a37ad2b46e2d53bf') })
       .then((result) => console.log(result))
       .catch((err) => console.log(err));
   }
