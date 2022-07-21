@@ -19,6 +19,7 @@
   "homepage": "https://github.com/shbhmshekhar/node-task-app#readme",
   "dependencies": {
     "mongodb": "^4.8.0",
-    "mongoose": "^6.4.6"
+    "mongoose": "^6.4.6",
+    "validator": "^13.7.0"
   }
 }
