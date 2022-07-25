@@ -56,6 +56,30 @@ app.post('/addtask', async (req, res) => {
   }
 });
 
+app.get('/tasks', async (req, res) => {
+  try {
+    const tasks = await Task.find({});
+    if (!tasks) {
+      return res.status(404).send();
+    }
+    res.send(tasks);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+app.get('/tasks/:id', async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const task = await Task.findById(_id);
+    if (!task) {
+      return res.status(404).send();
+    }
+    res.send(task);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
 });
