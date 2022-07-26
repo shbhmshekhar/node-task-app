@@ -34,3 +34,11 @@ app.listen(port, () => {
 // };
 
 // main();
+
+//EG. FILE UPLOAD
+//
+// const upload = multer({ dest: 'uploads/' });
+
+// app.post('/upload', upload.single('upload'), async (req, res) => {
+//   res.send();
+// });

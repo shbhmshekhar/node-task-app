@@ -1,6 +1,8 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+const multer = require('multer');
+const upload = multer({ dest: 'users/avatars/' });
 
 const router = new express.Router();
 
@@ -50,6 +52,14 @@ router.post('/addusers', async (req, res) => {
     res.status(400).send(err);
     console.log('Error while saving');
   }
+});
+
+/*
+ *ADD MULTER FOR UPLOADING USER AVATAr
+ */
+
+router.post('/user/me/avatar', upload.single('avatar'), (req, res) => {
+  res.send();
 });
 
 router.get('/users/me', auth, async (req, res) => {
