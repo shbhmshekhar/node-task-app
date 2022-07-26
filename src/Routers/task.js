@@ -18,24 +18,33 @@ router.post('/addtask', auth, async (req, res) => {
 
 /*
  * GET ALL TASKS FOR A USER
- * ADDED FILTER BASED ON QUERY PARAMS: /tasks?completed=true/false
+ * ADDED FILTER BASED ON QUERY PARAMS: GET /tasks?completed=true/false
+ * ADDED PAGINATION GET /tasks?limit=$num&skip=$num
  */
 router.get('/tasks', auth, async (req, res) => {
   try {
-    let completedStatus = {};
+    const match = {};
     if (req.query.completed) {
-      completedStatus.completed = req.query.completed === 'true';
+      match.completed = req.query.completed === 'true';
     }
-    const tasks = await Task.find({
-      owner: req.user._id,
-      ...completedStatus,
+    await req.user.populate({
+      path: 'tasks',
+      match,
     });
-    // await req.user.populate('tasks').execPopulate();
-    if (!tasks) {
-      return res.status(404).send();
-    }
-    res.send(tasks);
-    // res.send(req.user.tasks);
+    res.send(req.user.tasks);
+    // let completedStatus = {};
+    // if (req.query.completed) {
+    //   completedStatus.completed = req.query.completed === 'true';
+    // }
+    // const tasks = await Task.find({
+    //   owner: req.user._id,
+    //   ...completedStatus,
+    // });
+
+    // if (!tasks) {
+    //   return res.status(404).send();
+    // }
+    // res.send(tasks);
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
