@@ -20,19 +20,28 @@ router.post('/addtask', auth, async (req, res) => {
  * GET ALL TASKS FOR A USER
  * ADDED FILTER BASED ON QUERY PARAMS: GET /tasks?completed=true/false
  * ADDED PAGINATION GET /tasks?limit=$num&skip=$num
+ * ADDED SKIP GET /tasks?skip=$num
+ * ADDED SORT GET /tasks?sortBy=createdAt:asc/desc
  */
 router.get('/tasks', auth, async (req, res) => {
   try {
     const match = {};
+    const sort = {};
     if (req.query.completed) {
       match.completed = req.query.completed === 'true';
+    }
+    if (req.query.sortBy) {
+      const parts = req.query.sortBy.split(':');
+      sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
     }
     await req.user.populate({
       path: 'tasks',
       match,
       options: {
-        limit: parseInt(req.query.limit),
-        skip: parseInt(req.query.skip),
+        limit: !req.query.limit ? 0 : parseInt(req.query.limit),
+        skip:
+          req.query.skip < 0 || !req.query.skip ? 0 : parseInt(req.query.skip),
+        sort,
       },
     });
     res.send(req.user.tasks);
