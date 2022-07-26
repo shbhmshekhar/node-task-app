@@ -16,10 +16,20 @@ router.post('/addtask', auth, async (req, res) => {
   }
 });
 
-// GET ALL TASKS FOR A USER
+/*
+ * GET ALL TASKS FOR A USER
+ * ADDED FILTER BASED ON QUERY PARAMS: /tasks?completed=true/false
+ */
 router.get('/tasks', auth, async (req, res) => {
   try {
-    const tasks = await Task.find({ owner: req.user._id });
+    let completedStatus = {};
+    if (req.query.completed) {
+      completedStatus.completed = req.query.completed === 'true';
+    }
+    const tasks = await Task.find({
+      owner: req.user._id,
+      ...completedStatus,
+    });
     // await req.user.populate('tasks').execPopulate();
     if (!tasks) {
       return res.status(404).send();
