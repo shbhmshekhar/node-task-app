@@ -1,8 +1,8 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const app = require('../app');
-const User = require('../models/user');
+const app = require('../src/app');
+const User = require('../src/models/user');
 
 const userOneId = new mongoose.Types.ObjectId();
 const userOne = {
@@ -99,5 +99,37 @@ describe('user test cases', () => {
   });
   test('should not delete account for unautheticated user', async () => {
     await request(app).delete('/users/me').send().expect(401);
+  });
+
+  test('should upload avatar image', async () => {
+    await request(app)
+      .post('/user/me/avatar')
+      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+      .attach('avatar', 'test/fixtures/user-icon.png')
+      .expect(200);
+    const user = await User.findById(userOneId);
+    expect(user.avatar).toEqual(expect.any(Buffer));
+  });
+
+  test('should perform valid updates for authenticated user', async () => {
+    await request(app)
+      .patch('/users/me')
+      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+      .send({
+        name: 'updated test user',
+      })
+      .expect(200);
+    const user = await User.findById(userOneId);
+    expect(user.name).toBe('updated test user');
+  });
+
+  test('should not update invalid user fields', async () => {
+    await request(app)
+      .patch('/users/me')
+      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+      .send({
+        location: 'some loc',
+      })
+      .expect(400);
   });
 });
