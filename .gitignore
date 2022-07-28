@@ -1,3 +1,2 @@
-node_modules/
-
-APISecretKeys.js
+env_config
+node_modules

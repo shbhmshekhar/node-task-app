@@ -153,10 +153,13 @@ router.patch('/users/me', auth, async (req, res) => {
 });
 
 router.delete('/users/me', auth, async (req, res) => {
+  console.log(req);
   try {
     // const deletedUser = await User.findByIdAndDelete(req.user._id);
     // if (!deletedUser) return res.status(404).send();
+
     await req.user.remove();
+
     sendCancellationMail(req.user.email, req.user.name);
     res.send(req.user);
   } catch (err) {
