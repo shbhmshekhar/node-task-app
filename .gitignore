@@ -1,3 +1,4 @@
 env_config
 node_modules
 mongodb_crud.js
+test/

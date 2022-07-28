@@ -56,6 +56,7 @@ router.post('/user/logoutAll', auth, async (req, res) => {
   }
 });
 
+//SIGNUP NEW USERS
 router.post('/addusers', async (req, res) => {
   // Create a new user
   const user = new User(req.body);
