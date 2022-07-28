@@ -21,6 +21,7 @@ const upload = multer({
 
 const router = new express.Router();
 
+// LOGIN USER
 router.post('/user/login', async (req, res) => {
   try {
     const user = await User.findByCredentials(
@@ -36,6 +37,7 @@ router.post('/user/login', async (req, res) => {
   }
 });
 
+//LOGOUT FROM THE CURRENT ACTIVE SESSION
 router.post('/user/logout', auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter(
@@ -48,6 +50,7 @@ router.post('/user/logout', auth, async (req, res) => {
   }
 });
 
+//CLEAR ALL ACTIVE SESSION
 router.post('/user/logoutAll', auth, async (req, res) => {
   try {
     req.user.tokens = [];
@@ -74,7 +77,7 @@ router.post('/addusers', async (req, res) => {
 });
 
 /*
- *ADD MULTER FOR UPLOADING USER AVATAr
+ *ADD MULTER FOR UPLOADING USER AVATAR
  */
 
 router.post(
@@ -102,6 +105,7 @@ router.post(
   }
 );
 
+//DELETE USER AVATAR
 router.delete('/user/me/avatar', auth, async (req, res) => {
   try {
     req.user.avatar = undefined;
@@ -112,6 +116,7 @@ router.delete('/user/me/avatar', auth, async (req, res) => {
   }
 });
 
+//GET USER AVATAR
 router.get('/users/:id/avatar', async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -124,6 +129,7 @@ router.get('/users/:id/avatar', async (req, res) => {
   }
 });
 
+//GET USER PROFILE
 router.get('/users/me', auth, async (req, res) => {
   res.send(req.user);
 });
@@ -156,7 +162,6 @@ router.patch('/users/me', auth, async (req, res) => {
 });
 
 router.delete('/users/me', auth, async (req, res) => {
-  console.log(req);
   try {
     // const deletedUser = await User.findByIdAndDelete(req.user._id);
     // if (!deletedUser) return res.status(404).send();
