@@ -1,4 +1,5 @@
 env_config
 node_modules
 mongodb_crud.js
-test/dummy_test
+test/
+testIdeas.js
